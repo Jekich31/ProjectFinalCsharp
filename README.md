@@ -4,64 +4,64 @@
 ![Project Type](https://img.shields.io/badge/Project-Console%20Application-green)
 ![Architecture](https://img.shields.io/badge/Architecture-OOP%20%2F%20Patterns-orange)
 
-**Remote Car Control** ist eine .NET-Konsolenanwendung, die ein modernes Ökosystem für intelligente Fahrzeuge simuliert. Das Projekt wurde entwickelt, um die praktische Beherrschung grundlegender und fortgeschrittener C#-Konzepte, objektorientierten Designs (OOD), Entwurfsmustern und Ressourcenmanagements zu demonstrieren.
+**Remote Car Control** is a .NET console application that simulates a modern ecosystem of smart vehicles. This project is designed to demonstrate practical proficiency in core and advanced C# concepts, object-oriented design (OOD), design patterns, and resource management.
 
-Die Anwendung ermöglicht es Benutzern, ihren eigenen Fuhrpark zu verwalten, die Geoposition in Echtzeit zu verfolgen, sofortige Benachrichtigungen bei Sicherheitsbereichsverletzungen (Geofencing) zu erhalten und ein detailliertes Audit-Trail von Telemetrielogs zu führen.
-
----
-
-## 🚀 Hauptfunktionen
-
-* **Fuhrparkmanagement:** Benutzerregistrierung, Hinzufügen von Elektrofahrzeugen (`ElectricCar`) und herkömmlichen Autos (`GasolineCar`) unter Verwendung des Factory-Method-Musters.
-* **Fernsteuerung:** Sperren/Entsperren von Türen, Starten und Stoppen des Motors über eine einheitliche Schnittstelle.
-* **Telemetriesimulation & Geofencing:** Echtzeit-Aktualisierung von Fahrzeugkoordinaten mit automatischer Überprüfung von Grenzüberschreitungen ("Heimatzone") gesteuert durch Events.
-* **Vollständige Statuspersistenz:** Automatische Serialisierung der gesamten Datenbank in das JSON-Format beim Beenden und nahtlose Deserialisierung beim Anwendungsstart.
-* **End-to-End-Logging:** Kontinuierliche Aufzeichnung aller kritischen Ereignisse und Benutzeraktionen in einer `telemetry.log`-Datei.
+The application allows users to manage their fleet, track geolocation in real time, receive instant alerts regarding security boundary breaches (Geofencing), and maintain a detailed audit trail of system logs.
 
 ---
 
-## 🛠️ Technischer Stack & Implementierung (Nach Kursmodulen)
+## 🚀 Key Features
 
-### Modul 1: Grundlagen, Datenstrukturen & Kernlogik
-* **C# 12/13 (.NET 8/9):** Nutzung moderner Syntaxfeatures, einschließlich **Top-level statements** in `Program.cs` für einen sauberen, prägnanten Einstiegspunkt.
-* **Kapselung:** Entitätseigenschaften verwenden restriktive Zugriffsmodifizierer (`get; private set;` / `get; init;`), was versehentliche Änderungen kritischer Daten (IDs, VIN-Codes) verhindert.
-* **Architektonische Trennung:** Klare Abgrenzung durch dedizierte Namespaces: `CarControl.Models`, `CarControl.Services`, `CarControl.Interfaces`.
-* **Effiziente Datentypen:** Geolocation-Koordinaten sind als leistungseffiziente `struct GeoCoordinate` implementiert, und Fahrzeugzustände nutzen typsichere `enum`-Strukturen (`EngineState`, `DoorState`).
-* **Nullable-Typen:** Verwendung zur flexiblen Handhabung optionaler oder fehlender Daten (z. B. `GeoCoordinate? HomeZone`).
-* **Benutzerdefinierte Ausnahmen (Exceptions):** Domänenspezifische Fehlerbehandlung wird über benutzerdefinierte Ausnahmen wie `CarSecurityException` verwaltet (z. B. beim Versuch, den Motor bei entriegelten Türen zu starten).
-
-### Modul 2: Arrays, Kollektionen & Fortgeschrittenes OOP
-* **Validierung & String-API:** Strikte Überprüfung von eindeutigen 17-stelligen VIN-Codes und umfassende Verarbeitung eingehender Benutzungsbefehle.
-* **Operatorüberladung:** Die Operatoren `==` und `!=` wurden für die Klasse `Car` überdefiniert, um einen direkten Objektvergleich basierend auf eindeutigen VIN-Codes zu ermöglichen.
-* **Indexer:** Implementierung der Indizierung in der Klasse `User` für schnelle Fahrzeug-Lookups nach Index `user[0]` oder nach einem bestimmten VIN-Code `user["VIN123"]`.
-* **Polymorphie:** Aufbauend auf einer abstrakten Basisklasse `Vehicle` und ihren abgeleiteten Klassen `ElectricCar` (Überwachung der Batteriekapazität) und `GasolineCar` (Simulation des Kraftstoffverbrauchs) mit überschriebenem `DisplayStatus()`-Verhalten.
-* **Schnittstellen (Interfaces):** Der Kontrollvertrag für die Hardwaresteuerung wird durch `IRemoteControllable` strikt definiert und erzwungen.
-
-### Modul 3: Events, Generics, LINQ & Datenverarbeitung
-* **Events & Records:** Das `OnGeofenceViolation`-Event nutzt unveränderliche `record`-Typen, um Daten über Zonenverletzungen zuverlässig zu übertragen.
-* **Generics:** Erstellung einer generischen Klasse `CommandsHistory<T>` zur Speicherung eines Audit-Trails von Aktionen oder Bewegungspfaden.
-* **LINQ:** Verwendung von Fluent-/Query-Syntax für eine erweiterte Fuhrparkfiltrierung (Finden von Fahrzeugen mit niedrigem Energiestatus, Sortieren nach Marke, Auswahl laufender Autos).
-* **I/O & Serialisierung:** Dateiauditierung implementiert mittels `StreamWriter` und Erhalt des Systemstatus über `System.Text.Json`.
-
-### Modul 4: Architektur & Ressourcenmanagement
-* **Speicherverwaltung:** Die ordnungsgemäße Implementierung des `IDisposable`-Musters zusammen mit `using`-Anweisungen garantiert die sichere Freigabe von Logdatei-Handles.
+* **Fleet Management:** User registration, adding electric vehicles (`ElectricCar`) and conventional cars (`GasolineCar`) utilizing the Factory Method pattern.
+* **Remote Control:** Locking/unlocking doors, starting and stopping the engine through a unified interface.
+* **Telemetry Simulation & Geofencing:** Real-time updates of vehicle coordinates with automatic boundary violation checks driven by events.
+* **Full State Persistence:** Automatic serialization of the entire database into JSON format upon exiting, and seamless deserialization on application startup.
+* **End-to-End Logging:** Keeping a continuous record of all critical events and user actions in a `telemetry.log` file.
 
 ---
 
-## 🖥️ Struktur des Konsolenmenüs
+## 🛠️ Technical Stack & Implementation (By Course Modules)
+
+### Module 1: Fundamentals, Data Structures & Core Logic
+* **C# 12/13 (.NET 8/9):** Leveraging modern syntax features, including **Top-level statements** in `Program.cs` for a clean, concise entry point.
+* **Encapsulation:** Entity properties utilize restricted access modifiers (`get; private set;` / `get; init;`), preventing accidental modifications of critical data (IDs, VIN codes).
+* **Architectural Separation:** Clear boundaries established using dedicated namespaces: `CarControl.Models`, `CarControl.Services`, `CarControl.Interfaces`.
+* **Efficient Data Types:** Geolocation coordinates are implemented as a performance-efficient `struct GeoCoordinate`, and car states use type-safe `enum` structures (`EngineState`, `DoorState`).
+* **Nullable Types:** Used for flexible handling of optional or missing data (e.g., `GeoCoordinate? HomeZone`).
+* **Custom Exceptions:** Domain-specific error handling is managed via custom exceptions like `CarSecurityException` (e.g., attempting to start the engine while doors are unlocked).
+
+### Module 2: Arrays, Collections & Advanced OOP
+* **Validation & String API:** Strict verification of 17-character VIN codes and comprehensive processing of incoming user commands.
+* **Operator Overloading:** The `==` and `!=` operators are overridden for the `Car` class to enable direct object comparison based on unique VIN codes.
+* **Indexers:** Implemented indexing in the `User` class for rapid vehicle lookups by index `user[0]` or by a specific VIN code `user["VIN123"]`.
+* **Polymorphism:** Built upon an abstract base class `Vehicle` and its derived classes, `ElectricCar` (tracking battery capacity) and `GasolineCar` (simulating fuel consumption), with overridden `DisplayStatus()` behavior.
+* **Interfaces:** The hardware control contract is strictly defined and enforced through `IRemoteControllable`.
+
+### Module 3: Events, Generics, LINQ & Data Processing
+* **Events & Records:** The `OnGeofenceViolation` event leverages immutable `record` types to reliably transmit breach data payloads.
+* **Generics:** Created a generic `CommandsHistory<T>` class to store an audit trail of actions or breadcrumb movement tracks.
+* **LINQ:** Applied Fluent/Query syntax for advanced fleet filtration (finding vehicles with low energy levels, sorting by brand, or querying running vehicles).
+* **I/O & Serialization:** File auditing is implemented using `StreamWriter`, and system state preservation is achieved via `System.Text.Json`.
+
+### Module 4: Architecture & Resource Management
+* **Memory Management:** Proper implementation of the `IDisposable` pattern alongside `using` statements ensures guaranteed, deterministic release of system log file handles.
+
+---
+
+## 🖥️ Console Menu Structure
 
 ```text
-Hauptbildschirm
- ├── [1] Registrieren
- ├── [2] Im persönlichen Bereich anmelden
- └── [3] Beenden (JSON-Autosave)
+Main Screen
+ ├── [1] Register
+ ├── [2] Log In to Personal Account
+ └── [3] Exit (JSON Auto-save)
 
-Persönlicher Bereich (LINQ-Fuhrparkmonitor)
- ├── [1] Fahrzeug hinzufügen (Fabrikmethode: Electric / Gasoline)
- ├── [2] Fahrzeug aus der Garage auswählen (Indexer-Suche)
- └── [3] Zurück
+Personal Account (LINQ Fleet Monitor)
+ ├── [1] Add Vehicle (Factory Method Call: Electric / Gasoline)
+ ├── [2] Select Vehicle from Garage (Indexer-based lookup)
+ └── [3] Back
 
-Fahrzeugsteuerungs-Bildschirm (IRemoteControllable)
- ├── Status: [Türen: Locked | Motor: Stopped | Batterie: 85% | Koordinaten: 50.45, 30.52]
- ├── Befehle: Sperren/Entsperren, Motor Starten/Stoppen
- └── [Koordinatenänderung simulieren] ──> (Trigger Geofence -> Event -> Eintrag in .log)
+Vehicle Control Screen (IRemoteControllable)
+ ├── Status: [Doors: Locked | Engine: Stopped | Battery: 85% | Coordinates: 50.45, 30.52]
+ ├── Commands: Lock/Unlock, Start/Stop Engine
+ └── [Simulate Coordinate Change] ──> (Trigger Geofence -> Event -> Write to .log)

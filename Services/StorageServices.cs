@@ -1,8 +1,9 @@
 ﻿using System.IO;
 using System.Text.Json;
 using System.Collections.Generic;
+using ProjectFIN.models;
 
-namespace ProjectFIN.models;
+namespace ProjectFIN.Services;
 
 public class StorageService
 {

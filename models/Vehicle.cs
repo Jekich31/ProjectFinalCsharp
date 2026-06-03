@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectFIN.InterFaces;
+using System;
 using System.Text.Json.Serialization;
 
 namespace ProjectFIN.models;

@@ -1,4 +1,4 @@
-﻿namespace ProjectFIN.models;
+﻿namespace ProjectFIN.InterFaces;
 
 public interface IRemoteControllable
 {

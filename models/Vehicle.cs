@@ -1,18 +1,25 @@
-﻿namespace ProjectFIN.models;
+﻿using System;
+using System.Text.Json.Serialization;
 
+namespace ProjectFIN.models;
+
+[JsonDerivedType(typeof(ElectricCar), typeDiscriminator: "EV")]
+[JsonDerivedType(typeof(GasolineCar), typeDiscriminator: "Gas")]
 public abstract class Vehicle : IRemoteControllable
 {
-    public string Vin { get; private set; }
-    public string Brand { get; private set; }
-    public string Model { get; private set; }
+    public string Vin { get; init; }
+    public string Brand { get; init; }
+    public string Model { get; init; }
     public EngineState Engine { get; protected set; } = EngineState.Stopped;
-    public DoorState Doors { get; private set; } = DoorState.Locked;
+    public DoorState Doors { get; protected set; } = DoorState.Locked;
     public GeoCoordinate CurrentLocation { get; set; }
 
     public GeoCoordinate? HomeZone { get; private set; }
     public double AllowedRadius { get; private set; }
 
     public event Action<string>? OnGeofenceViolation;
+
+    protected Vehicle() { }
 
     public Vehicle(string vin, string brand, string model, GeoCoordinate startLocation)
     {
@@ -50,6 +57,7 @@ public abstract class Vehicle : IRemoteControllable
         }
         Doors = DoorState.Locked;
     }
+
     public void UnlockDoors()
     {
         if (Doors == DoorState.Unlocked)
@@ -72,13 +80,13 @@ public abstract class Vehicle : IRemoteControllable
         }
         Engine = EngineState.Running;
     }
+
     public void StopEngine()
     {
         if (Engine == EngineState.Stopped)
         {
             throw new Exception("The engine is already stopped!");
         }
-
         Engine = EngineState.Stopped;
     }
 

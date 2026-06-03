@@ -1,10 +1,14 @@
-﻿namespace ProjectFIN.models;
+﻿using System;
+
+namespace ProjectFIN.models;
 
 public class GasolineCar : Vehicle
 {
-    public double FuelLevel { get; private set; }
+    public double FuelLevel { get; init; }
 
-    public GasolineCar(string vin, string brand, string model, GeoCoordinate startLocation, double fuel) 
+    private GasolineCar() : base() { }
+
+    public GasolineCar(string vin, string brand, string model, GeoCoordinate startLocation, double fuel)
         : base(vin, brand, model, startLocation)
     {
         FuelLevel = fuel;
@@ -15,7 +19,6 @@ public class GasolineCar : Vehicle
         try
         {
             base.StartEngine();
-
             if (FuelLevel <= 0)
             {
                 throw new Exception("Fuel tank is empty! Engine cannot start.");

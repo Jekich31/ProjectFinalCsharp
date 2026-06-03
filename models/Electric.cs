@@ -1,8 +1,12 @@
-﻿namespace ProjectFIN.models;
+﻿using System;
+
+namespace ProjectFIN.models;
 
 public class ElectricCar : Vehicle
 {
-    public double BatteryLevel { get; private set; } = 100.0;
+    public double BatteryLevel { get; init; } = 100.0;
+
+    private ElectricCar() : base() { }
 
     public ElectricCar(string vin, string brand, string model, GeoCoordinate startLocation, double battery)
         : base(vin, brand, model, startLocation)
@@ -15,7 +19,6 @@ public class ElectricCar : Vehicle
         try
         {
             base.StartEngine();
-
             if (BatteryLevel <= 3)
             {
                 throw new Exception("Battery critically low! Charge required.");

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace ProjectFIN.models
 {
@@ -9,11 +8,13 @@ namespace ProjectFIN.models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
 
-        public GeoCoordinate(double lat, double lng)
+        [JsonConstructor]
+        public GeoCoordinate(double latitude, double longitude)
         {
-            Latitude = lat;
-            Longitude = lng;
+            Latitude = latitude;
+            Longitude = longitude;
         }
+
         public double DistanceTo(GeoCoordinate other)
         {
             double r = 6371000;

@@ -1,67 +1,67 @@
-# Remote Car Control System (Система дистанційного керування автомобілем)
+# Remote Car Control System
 
 ![.NET Version](https://img.shields.io/badge/.NET-8.0%20%2F%209.0-blue)
 ![Project Type](https://img.shields.io/badge/Project-Console%20Application-green)
 ![Architecture](https://img.shields.io/badge/Architecture-OOP%20%2F%20Patterns-orange)
 
-**Remote Car Control** — це консольний додаток на платформі .NET, який симулює сучасну екосистему розумних автомобілів. Проект розроблено з метою демонстрації практичного володіння базовими та просунутими концепціями мови C#, об'єктно-орієнтованого проектування (ООП), паттернів та керування ресурсами.
+**Remote Car Control** ist eine .NET-Konsolenanwendung, die ein modernes Ökosystem für intelligente Fahrzeuge simuliert. Das Projekt wurde entwickelt, um die praktische Beherrschung grundlegender und fortgeschrittener C#-Konzepte, objektorientierten Designs (OOD), Entwurfsmustern und Ressourcenmanagements zu demonstrieren.
 
-Програма дозволяє користувачам керувати власним автопарком, відстежувати геопозицію в реальному часі, оперативно отримувати сповіщення про порушення безпеки (Geofencing) та вести детальний аудит логів.
-
----
-
-## 🚀 Основний функціонал
-
-* **Управління автопарком:** Реєстрація користувачів, додавання електромобілів (`ElectricCar`) та бензинових авто (`GasolineCar`) через фабричний метод.
-* **Дистанційне керування:** Блокування/розблокування дверей, запуск та зупинка двигуна через уніфікований інтерфейс.
-* **Симуляція телеметрії та Geofencing:** Оновлення координат автомобіля в реальному часі з автоматичною перевіркою виходу за межі "домашньої зони" за допомогою подій.
-* **Повне збереження стану:** Автоматична серіалізація всієї бази даних у формат JSON при виході та десеріалізація при старті програми.
-* **Наскрізне логування:** Запис усіх критичних подій та дій користувача у файл `telemetry.log`.
+Die Anwendung ermöglicht es Benutzern, ihren eigenen Fuhrpark zu verwalten, die Geoposition in Echtzeit zu verfolgen, sofortige Benachrichtigungen bei Sicherheitsbereichsverletzungen (Geofencing) zu erhalten und ein detailliertes Audit-Trail von Telemetrielogs zu führen.
 
 ---
 
-## 🛠️ Технічний стек та реалізація (За модулями курсу)
+## 🚀 Hauptfunktionen
 
-### Модуль 1: Основи, структура даних та логіка
-* **C# 12/13 (.NET 8/9):** Використання сучасного синтаксису, зокрема **Top-level statements** у `Program.cs` для лаконічної точки входу.
-* **Інкапсуляція:** Властивості сутностей мають захищені модифікатори доступу (`get; private set;`), що унеможливлює випадкову зміну критичних даних (ID, VIN-код).
-* **Розподіл архітектури:** Чітке розмежування за просторами імен: `CarControl.Models`, `CarControl.Services`, `CarControl.Interfaces`.
-* **Ефективні типи даних:** Координати реалізовані як `struct GeoCoordinate`, а стани авто — через безпечні `enum` (`EngineState`, `DoorState`).
-* **Nullable-типи:** Використовуються для гнучкої обробки відсутніх даних (наприклад, `GeoCoordinate? HomeZone`).
-* **Кастомні винятки:** Реалізовано обробку помилок бізнес-логіки за допомогою `CarSecurityException` (наприклад, спроба завести двигун із відкритими дверима).
-
-### Модуль 2: Масиви, колекції та поглиблене ООП
-* **Валідація та String API:** Перевірка унікальних 17-значних VIN-кодів та обробка введених команд.
-* **Перевантаження операторів:** Оператори `==` та `!=` перевизначені для класу `Car` для порівняння об'єктів за їхнім VIN-кодом.
-* **Індексатори:** Додано індексування для класу `User` для швидкого пошуку авто за індексом `user[0]` або VIN-кодом `user["VIN123"]`.
-* **Поліморфізм:** Базовий клас `Vehicle` та його спадкоємці `ElectricCar` (з урахуванням ємності батареї) та `GasolineCar` (із симуляцією витрати палива). Перевизначено метод `DisplayStatus()`.
-* **Інтерфейси:** Контракт управління реалізовано через `IRemoteControllable`.
-
-### Модуль 3: Події, Generics, LINQ та робота з даними
-* **Події та Records:** Подія `OnGeofenceViolation` використовує незмінні дані (`record`) для передачі інформації про порушення меж зони.
-* **Generics:** Створено універсальний клас `CommandsHistory<T>` для збереження історії дій або треку переміщень.
-* **LINQ:** Використання Fluent/Query синтаксису для фільтрації авто (пошук машин із низьким зарядом, сортування за маркою, вибірка заведених авто).
-* **I/O та Серіалізація:** Текстовий аудит за допомогою `StreamWriter` та збереження стану системи через `System.Text.Json`.
-
-### Модуль 4: Архітектура та керування ресурсами
-* **Управління пам'яттю:** Реалізація `IDisposable` та конструкції `using` для гарантованого звільнення дескрипторів файлів логів.
+* **Fuhrparkmanagement:** Benutzerregistrierung, Hinzufügen von Elektrofahrzeugen (`ElectricCar`) und herkömmlichen Autos (`GasolineCar`) unter Verwendung des Factory-Method-Musters.
+* **Fernsteuerung:** Sperren/Entsperren von Türen, Starten und Stoppen des Motors über eine einheitliche Schnittstelle.
+* **Telemetriesimulation & Geofencing:** Echtzeit-Aktualisierung von Fahrzeugkoordinaten mit automatischer Überprüfung von Grenzüberschreitungen ("Heimatzone") gesteuert durch Events.
+* **Vollständige Statuspersistenz:** Automatische Serialisierung der gesamten Datenbank in das JSON-Format beim Beenden und nahtlose Deserialisierung beim Anwendungsstart.
+* **End-to-End-Logging:** Kontinuierliche Aufzeichnung aller kritischen Ereignisse und Benutzeraktionen in einer `telemetry.log`-Datei.
 
 ---
 
-## 🖥️ Структура консольного меню
+## 🛠️ Technischer Stack & Implementierung (Nach Kursmodulen)
+
+### Modul 1: Grundlagen, Datenstrukturen & Kernlogik
+* **C# 12/13 (.NET 8/9):** Nutzung moderner Syntaxfeatures, einschließlich **Top-level statements** in `Program.cs` für einen sauberen, prägnanten Einstiegspunkt.
+* **Kapselung:** Entitätseigenschaften verwenden restriktive Zugriffsmodifizierer (`get; private set;` / `get; init;`), was versehentliche Änderungen kritischer Daten (IDs, VIN-Codes) verhindert.
+* **Architektonische Trennung:** Klare Abgrenzung durch dedizierte Namespaces: `CarControl.Models`, `CarControl.Services`, `CarControl.Interfaces`.
+* **Effiziente Datentypen:** Geolocation-Koordinaten sind als leistungseffiziente `struct GeoCoordinate` implementiert, und Fahrzeugzustände nutzen typsichere `enum`-Strukturen (`EngineState`, `DoorState`).
+* **Nullable-Typen:** Verwendung zur flexiblen Handhabung optionaler oder fehlender Daten (z. B. `GeoCoordinate? HomeZone`).
+* **Benutzerdefinierte Ausnahmen (Exceptions):** Domänenspezifische Fehlerbehandlung wird über benutzerdefinierte Ausnahmen wie `CarSecurityException` verwaltet (z. B. beim Versuch, den Motor bei entriegelten Türen zu starten).
+
+### Modul 2: Arrays, Kollektionen & Fortgeschrittenes OOP
+* **Validierung & String-API:** Strikte Überprüfung von eindeutigen 17-stelligen VIN-Codes und umfassende Verarbeitung eingehender Benutzungsbefehle.
+* **Operatorüberladung:** Die Operatoren `==` und `!=` wurden für die Klasse `Car` überdefiniert, um einen direkten Objektvergleich basierend auf eindeutigen VIN-Codes zu ermöglichen.
+* **Indexer:** Implementierung der Indizierung in der Klasse `User` für schnelle Fahrzeug-Lookups nach Index `user[0]` oder nach einem bestimmten VIN-Code `user["VIN123"]`.
+* **Polymorphie:** Aufbauend auf einer abstrakten Basisklasse `Vehicle` und ihren abgeleiteten Klassen `ElectricCar` (Überwachung der Batteriekapazität) und `GasolineCar` (Simulation des Kraftstoffverbrauchs) mit überschriebenem `DisplayStatus()`-Verhalten.
+* **Schnittstellen (Interfaces):** Der Kontrollvertrag für die Hardwaresteuerung wird durch `IRemoteControllable` strikt definiert und erzwungen.
+
+### Modul 3: Events, Generics, LINQ & Datenverarbeitung
+* **Events & Records:** Das `OnGeofenceViolation`-Event nutzt unveränderliche `record`-Typen, um Daten über Zonenverletzungen zuverlässig zu übertragen.
+* **Generics:** Erstellung einer generischen Klasse `CommandsHistory<T>` zur Speicherung eines Audit-Trails von Aktionen oder Bewegungspfaden.
+* **LINQ:** Verwendung von Fluent-/Query-Syntax für eine erweiterte Fuhrparkfiltrierung (Finden von Fahrzeugen mit niedrigem Energiestatus, Sortieren nach Marke, Auswahl laufender Autos).
+* **I/O & Serialisierung:** Dateiauditierung implementiert mittels `StreamWriter` und Erhalt des Systemstatus über `System.Text.Json`.
+
+### Modul 4: Architektur & Ressourcenmanagement
+* **Speicherverwaltung:** Die ordnungsgemäße Implementierung des `IDisposable`-Musters zusammen mit `using`-Anweisungen garantiert die sichere Freigabe von Logdatei-Handles.
+
+---
+
+## 🖥️ Struktur des Konsolenmenüs
 
 ```text
-Головний екран
- ├── [1] Реєстрація
- ├── [2] Вхід в особистий кабінет
- └── [3] Вихід (Автозбереження JSON)
+Hauptbildschirm
+ ├── [1] Registrieren
+ ├── [2] Im persönlichen Bereich anmelden
+ └── [3] Beenden (JSON-Autosave)
 
-Особистий кабінет (LINQ-моніторинг)
- ├── [1] Додати автомобіль (Виклик Фабрики: Electric / Gasoline)
- ├── [2] Вибрати автомобіль з гаража (Пошук через індексатор)
- └── [3] Назад
+Persönlicher Bereich (LINQ-Fuhrparkmonitor)
+ ├── [1] Fahrzeug hinzufügen (Fabrikmethode: Electric / Gasoline)
+ ├── [2] Fahrzeug aus der Garage auswählen (Indexer-Suche)
+ └── [3] Zurück
 
-Екран керування авто (IRemoteControllable)
- ├── Статус: [Двері: Замкнені | Двигун: Stopped | Батарея: 85% | Координати: 50.45, 30.52]
- ├── Команди: Замкнути/Відімкнути, Запустити/Глушити двигун
- └── [Симуляція зміни координат] ──> (Trigger Geofence -> Подія -> Запис у .log)
+Fahrzeugsteuerungs-Bildschirm (IRemoteControllable)
+ ├── Status: [Türen: Locked | Motor: Stopped | Batterie: 85% | Koordinaten: 50.45, 30.52]
+ ├── Befehle: Sperren/Entsperren, Motor Starten/Stoppen
+ └── [Koordinatenänderung simulieren] ──> (Trigger Geofence -> Event -> Eintrag in .log)

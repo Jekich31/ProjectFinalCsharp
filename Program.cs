@@ -161,21 +161,52 @@ while (isRunning)
             }
             break;
 
-        case "4":
+        case "4": 
             if (selectedCar == null) { Console.WriteLine("[ERROR]: Please select a vehicle first!"); break; }
-            selectedCar.StopEngine();
-            Console.WriteLine("[COMMAND]: Engine stopped.");
+            try
+            {
+                selectedCar.StopEngine();
+                StorageService.SaveVehicles(garage);
+                Console.WriteLine("[COMMAND]: Engine stopped.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ENGINE ERROR]: {ex.Message}");
+            }
             break;
 
         case "5":
             if (selectedCar == null) { Console.WriteLine("[ERROR]: Please select a vehicle first!"); break; }
-            selectedCar.UnlockDoors();
+            try {
+                selectedCar.UnlockDoors();
+                if(selectedCar.Doors==DoorState.Unlocked)
+                {
+                    throw new Exception("Doors are already unlocked.");
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"[SECURITY ALARM]: {ex.Message}");
+                break;
+            }
             Console.WriteLine("[COMMAND]: Doors unlocked.");
             break;
 
         case "6":
             if (selectedCar == null) { Console.WriteLine("[ERROR]: Please select a vehicle first!"); break; }
-            selectedCar.LockDoors();
+            try
+            {
+                selectedCar.LockDoors();
+                if(selectedCar.Doors == DoorState.Locked)
+                {
+                    throw new Exception("Doors are already locked and secured.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[SECURITY ALARM]: {ex.Message}");
+                break;
+            }
             Console.WriteLine("[COMMAND]: Doors locked and secured.");
             break;
 

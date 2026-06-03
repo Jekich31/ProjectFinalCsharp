@@ -12,11 +12,19 @@ public class ElectricCar : Vehicle
 
     public override void StartEngine()
     {
-        base.StartEngine(); // сначала проверит двери
-        if (BatteryLevel <= 3)
+        try
+        {
+            base.StartEngine();
+
+            if (BatteryLevel <= 3)
+            {
+                throw new Exception("Battery critically low! Charge required.");
+            }
+        }
+        catch (Exception ex) when (ex.Message.Contains("Battery critically low"))
         {
             Engine = EngineState.Stopped;
-            throw new Exception("Battery critically low! Charge required.");
+            throw;
         }
     }
 

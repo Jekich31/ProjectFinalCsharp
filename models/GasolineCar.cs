@@ -12,11 +12,19 @@ public class GasolineCar : Vehicle
 
     public override void StartEngine()
     {
-        base.StartEngine();
-        if (FuelLevel <= 0)
+        try
+        {
+            base.StartEngine();
+
+            if (FuelLevel <= 0)
+            {
+                throw new Exception("Fuel tank is empty! Engine cannot start.");
+            }
+        }
+        catch (Exception ex) when (ex.Message.Contains("Fuel tank is empty"))
         {
             Engine = EngineState.Stopped;
-            throw new Exception("Fuel tank is empty! Engine cannot start.");
+            throw;
         }
     }
 

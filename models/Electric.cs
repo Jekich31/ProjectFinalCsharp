@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ProjectFIN.models;
 
@@ -8,10 +9,11 @@ public class ElectricCar : Vehicle
 
     private ElectricCar() : base() { }
 
-    public ElectricCar(string vin, string brand, string model, GeoCoordinate startLocation, double battery)
-        : base(vin, brand, model, startLocation)
+    [JsonConstructor]
+    public ElectricCar(string vin, string brand, string model, GeoCoordinate currentLocation, double batteryLevel)
+        : base(vin, brand, model, currentLocation)
     {
-        BatteryLevel = battery;
+        BatteryLevel = batteryLevel;
     }
 
     public override void StartEngine()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ProjectFIN.models;
 
@@ -8,10 +9,11 @@ public class GasolineCar : Vehicle
 
     private GasolineCar() : base() { }
 
-    public GasolineCar(string vin, string brand, string model, GeoCoordinate startLocation, double fuel)
-        : base(vin, brand, model, startLocation)
+    [JsonConstructor]
+    public GasolineCar(string vin, string brand, string model, GeoCoordinate currentLocation, double fuelLevel)
+        : base(vin, brand, model, currentLocation)
     {
-        FuelLevel = fuel;
+        FuelLevel = fuelLevel;
     }
 
     public override void StartEngine()

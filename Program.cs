@@ -25,7 +25,7 @@ while (isRunning)
 {
     Console.Clear();
     Console.WriteLine("==================================================");
-    Console.WriteLine("         SMART CAR TELEMATICS SYSTEM         ");
+    Console.WriteLine("         REMOTE CAR CONTROL SYSTEM         ");
     Console.WriteLine("==================================================");
     Console.WriteLine($" Total vehicles in Garage: {garage.Count}");
     Console.WriteLine($" EVs: {garage.Count(v => v is ElectricCar)} | Gasoline: {garage.Count(v => v is GasolineCar)}");

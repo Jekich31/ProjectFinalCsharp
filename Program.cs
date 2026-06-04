@@ -27,7 +27,7 @@ while (isRunning)
 
     Console.ForegroundColor = ConsoleColor.Blue;
     Console.WriteLine("==================================================");
-    Console.WriteLine("         SMART CAR TELEMATICS SYSTEM         ");
+    Console.WriteLine("         REMOTE CAR CONTROL SYSTEM         ");
     Console.WriteLine("==================================================");
     Console.ResetColor();
 

@@ -18,9 +18,15 @@ public abstract class Vehicle : IRemoteControllable
     public GeoCoordinate? HomeZone { get; private set; }
     public double AllowedRadius { get; private set; }
 
+    [JsonIgnore]
+    private IVehicleState _state;
+
     public event Action<string>? OnGeofenceViolation;
 
-    protected Vehicle() { }
+    protected Vehicle()
+    {
+        InitializeState();
+    }
 
     public Vehicle(string vin, string brand, string model, GeoCoordinate startLocation)
     {
@@ -28,6 +34,34 @@ public abstract class Vehicle : IRemoteControllable
         Brand = brand;
         Model = model;
         CurrentLocation = startLocation;
+        InitializeState();
+    }
+
+    private void InitializeState()
+    {
+        if (Engine == EngineState.Running)
+        {
+            _state = new RunningState();
+        }
+        else
+        {
+            _state = new StoppedState();
+        }
+    }
+
+    public void SetState(IVehicleState state)
+    {
+        _state = state;
+    }
+
+    public void SetEngineState(EngineState engineState)
+    {
+        Engine = engineState;
+    }
+
+    public void SetDoorState(DoorState doorState)
+    {
+        Doors = doorState;
     }
 
     public void SetGeofence(double lat, double lng, double radius)
@@ -52,43 +86,22 @@ public abstract class Vehicle : IRemoteControllable
 
     public void LockDoors()
     {
-        if (Doors == DoorState.Locked)
-        {
-            throw new Exception("Doors are already locked and secured.");
-        }
-        Doors = DoorState.Locked;
+        _state.LockDoors(this);
     }
 
     public void UnlockDoors()
     {
-        if (Doors == DoorState.Unlocked)
-        {
-            throw new Exception("Doors are already unlocked.");
-        }
-        Doors = DoorState.Unlocked;
+        _state.UnlockDoors(this);
     }
 
     public virtual void StartEngine()
     {
-        if (Engine == EngineState.Running)
-        {
-            throw new Exception("The engine is already running!");
-        }
-
-        if (Doors == DoorState.Unlocked)
-        {
-            throw new Exception("Security alert! Cannot start the engine while doors are unlocked.");
-        }
-        Engine = EngineState.Running;
+        _state.StartEngine(this);
     }
 
     public void StopEngine()
     {
-        if (Engine == EngineState.Stopped)
-        {
-            throw new Exception("The engine is already stopped!");
-        }
-        Engine = EngineState.Stopped;
+        _state.StopEngine(this);
     }
 
     public abstract string GetResourceStatus();

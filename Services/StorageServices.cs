@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
-using ProjectFIN.models;
 
-namespace ProjectFIN.Services;
+namespace ProjectFIN.models;
 
 public class StorageService
 {
@@ -27,6 +28,22 @@ public class StorageService
         {
             string jsonString = File.ReadAllText(FileName);
             var vehicles = JsonSerializer.Deserialize<List<Vehicle>>(jsonString);
+
+            if (vehicles != null)
+            {
+                foreach (var vehicle in vehicles)
+                {
+                    if (vehicle.Engine == EngineState.Running)
+                    {
+                        vehicle.SetState(new RunningState());
+                    }
+                    else
+                    {
+                        vehicle.SetState(new StoppedState());
+                    }
+                }
+            }
+
             return vehicles ?? new List<Vehicle>();
         }
         catch
